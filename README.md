@@ -22,5 +22,5 @@ Sound-Duel is a generic pop quiz game, built with [Meteor](https://www.meteor.co
 
  * `cd` into the repo and use [Meteorite](https://github.com/oortcloud/meteorite) to install dependencies and run Meteor:
 
-        # cd Sound-Duel
+        # cd Sound-Duel/app
         # mrt
