@@ -6,10 +6,13 @@ startGame = ->
   Meteor.call 'newGame', (error, result) ->
     unless error?
       Session.set 'currentQuestion', 0
-      Session.set 'currentGameId', result
       Router.go 'game', _id: result, action: 'play'
     else
-      console.log error
+      if error.error == 404
+        Router.go 'lobby'
+        FlashMessages.sendError "Der er ingen quiz i dag"
+      else
+        console.log error
 
 
 # helpers
