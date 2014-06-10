@@ -2,6 +2,85 @@
 
 # methods
 
+# From: http://stackoverflow.com/a/9255507/118608
+Template.question.startCountdown = ->
+  console.log 'startCountdown called'
+  # Reset progress bar
+  Session.set 'gameProgress', 100
+  $('#asset-bar')
+    .attr('style', "width: 100%")
+    .text Math.floor(currentQuiz().pointsPerQuestion)
+
+  # Hide questions
+  $('#alternative-container').hide()
+
+  # Remove countdown
+  $countdown = $(".sound-duel-countdown")
+  $insertion_point = $countdown.prev()
+  $countdown.remove()
+  $countdown.removeClass('smaller')
+
+  # **iOS**: Ensure that sound is started
+  is_iOS = navigator.userAgent.match /(iPad|iPhone|iPod)/g
+  is_iOS = true #TODO: ?
+
+  if is_iOS and Session.get('currentQuestion') == 0
+
+    $button = $('<button>Start</button>')
+    $button.click ->
+
+      # Play silent audio clip top obtain the right from iOS to play audio
+      Template.assets.playSilence()
+
+      # Remove button
+      @remove()
+
+      __startQuestion($insertion_point, $countdown)
+
+    # Insert button
+    $insertion_point.after($button)
+  else
+    Template.assets.loadSound()
+
+    __startQuestion($insertion_point, $countdown)
+
+  # Skip animation if spacebar is pressed
+  $('body').keyup (e) ->
+    if e.keyCode == 32
+      # user has pressed space
+      Template.question.showQuestion()
+
+
+__startQuestion = ($insertion_point, $countdown) ->
+  # Insert and show countdown
+  $insertion_point.after($countdown)
+  $countdown.show()
+
+  # Setup variables
+  i = 0
+  texts = ['3', '2', '1', 'Start!']
+  $('.sound-duel-countdown').text(texts[i])
+
+  # Change text on every animation iteration
+  $(".sound-duel-countdown").bind(
+    "animationiteration webkitAnimationIteration oAnimationIteration
+     MSAnimationIteration",
+    ->
+      i += 1
+      $(this).text(texts[i])
+      if texts[i].length > 2
+        $(this).addClass('smaller')
+      else
+        $(this).removeClass('smaller')
+  )
+
+  # When the animation has ended show the questions and play the sound
+  $(".sound-duel-countdown").bind(
+    "animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", ->
+      Template.question.showQuestion()
+  )
+
+
 answerQuestion = (answer) ->
   # pause asset
   audioPlayer().pause()
@@ -32,7 +111,7 @@ answerQuestion = (answer) ->
   else
     # otherwise go to the next question
     Session.set('currentQuestion', question_counter + 1)
-    Template.question.startQuestion()
+    Template.question.startCountdown()
 
 
 # helpers
@@ -64,9 +143,9 @@ Template.assets.helpers
 
   # binds audio element progression with progress bar
   bindAssetProgress: ->
-    console.log 'bindAssetProgress() called'
+    #console.log 'bindAssetProgress() called'
     $audioPlayer().bind 'timeupdate', ->
-      console.log 'timeupdate eventListener called'
+      #console.log 'timeupdate eventListener called'
       percent = (this.currentTime * 100) / this.duration
       Session.set 'gameProgress', percent
       value = (currentGame().pointsPerQuestion * (100 - percent)) / 100
@@ -76,6 +155,17 @@ Template.assets.helpers
         .attr('style', "width: #{100 - percent}%")
         .text Math.floor(value) + " points"
 
+Template.question.showQuestion = ->
+  # Hide countdown, show questions
+  $('[data-sd-quiz-progressbar]').show()
+  $(".sound-duel-countdown").hide()
+  $('#alternative-container').show()
+
+  # Enable answer buttons
+  $('.alternative').prop 'disabled', false
+
+  # Play sound
+  Template.assets.playAsset()
 
 Template.question.helpers
   currentQuestion: -> currentQuiz().name
@@ -97,24 +187,26 @@ Template.question.helpers
     else
       'progress-bar-success'
 
+# Template.question.startQuestion = ->
+#   # Reset progress bar
+#   $('#asset-bar')
+#     .attr('style', "width: 100%")
+#     .text Math.floor(currentQuiz().pointsPerQuestion)
 
-Template.question.startQuestion = ->
-  # Reset progress bar
-  $('#asset-bar')
-    .attr('style', "width: 100%")
-    .text Math.floor(currentQuiz().pointsPerQuestion)
+#   $('.alternative').prop 'disabled', false
 
-  $('.alternative').prop 'disabled', false
-  Template.assets.playAsset()
+#   Template.assets.playAsset()
 
-# **iOS**: Ensure that sound is started
-Template.question.ensurePlaying = ->
-  Template.question.startQuestion()
+# # **iOS**: Ensure that sound is started
+# Template.question.ensurePlaying = ->
+#   Template.question.startQuestion()
 
 
 # rendered
+
 Template.question.rendered = ->
-  Template.question.startQuestion()
+  console.log 'rendered'
+  Template.question.startCountdown()
 
 
 # events
