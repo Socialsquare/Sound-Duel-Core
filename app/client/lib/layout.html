@@ -10,11 +10,7 @@
 <template name='homeLink'>
   <li class="{{active 'lobby'}}">
     <a href="{{pathFor 'lobby'}}">
-      {{#if currentUser}}
-        Spil nu
-      {{else}}
-        Log ind
-      {{/if}}
+      Spil nu
     </a>
   </li>
 </template>
@@ -23,25 +19,6 @@
   <li class="{{active 'highscores'}}">
     <a id="highscores" href="{{pathFor 'highscores'}}">Highscores</a>
   </li>
-</template>
-
-<template name='currentUser'>
-  {{#if currentUser}}
-    <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{name}} <b class="caret"></b></a>
-      <ul class="dropdown-menu">
-        <!-- <li><a href="#">Something</a></li> -->
-        <!-- <li class="divider"></li> -->
-        <li>
-          <a id="logout" href="{{pathFor 'logout'}}">Log ud</a>
-        </li>
-      </ul>
-    </li>
-  {{else}}
-    <li>
-      <a href="{{pathFor 'login'}}">Log ind</a>
-    </li>
-  {{/if}}
 </template>
 
 <template name='navbar'>
@@ -55,54 +32,13 @@
           <span class="icon-bar"></span>
         </button>
         <a id="logo" class="navbar-brand" href="{{externallink}}">DR</a>
-        {{#if currentUser}}
-            {{> notifications}}
-        {{/if}}
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
         {{> homeLink}}
         {{> highscoresLink}}
-        {{#if currentUser}}
-          {{> currentUser}}
-        {{/if}}
         </ul>
       </div>
     </div>
-  </div>
-</template>
-
-<template name='notifications'>
-  <div class="navbar-notifications navbar-text dropdown">
-    <a href="#" class="navbar-link dropdown-toggle" data-toggle="dropdown">
-      <span class="glyphicon glyphicon-bell"></span>
-      {{#if count}}
-      <span class="badge">{{count}}</span>
-      {{/if}}
-    </a>
-
-    <ul class="dropdown-menu">
-    {{#if count}}
-      {{#each notifications}}
-        {{#if invite}}
-          <li>
-            <span>
-            <p>Du er blevet udfordret af {{username}}!</p>
-            <button class="btn btn-default btn-sm js-invite-accept" data-gameId="{{gameId}}">Accepter</button>
-            <button class="btn btn-default btn-sm js-invite-decline" data-gameId="{{gameId}}">Afslå</button>
-            </span>
-          </li>
-        {{else}}
-          <li>
-            <a href="{{pathFor 'game' _id=gameId action='result'}}">
-              {{username}} har besvaret din dyst! Se resultatet
-            </a>
-          </li>
-        {{/if}}
-      {{/each}}
-    {{else}}
-      <li><span>Ingen nye notifikationer</span></li>
-    {{/if}}
-    </ul>
   </div>
 </template>

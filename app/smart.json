@@ -3,7 +3,6 @@
     "npm": {},
     "iron-router": {},
     "bootstrap3-less": {},
-    "flash-messages": {},
-    "handlebars-server": {}
+    "flash-messages": {}
   }
 }

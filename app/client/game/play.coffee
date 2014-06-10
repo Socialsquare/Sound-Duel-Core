@@ -84,8 +84,7 @@ Template.question.helpers
 
   numberOfQuestions: -> numberOfQuestions()
 
-  alternatives: ->
-    currentQuestion().alternatives
+  alternatives: -> currentQuestion().alternatives
 
   progressBarColor: ->
     percent = Session.get 'gameProgress'
@@ -112,12 +111,14 @@ Template.question.startQuestion = ->
 Template.question.ensurePlaying = ->
   Template.question.startQuestion()
 
+
 # rendered
 Template.question.rendered = ->
   Template.question.startQuestion()
 
 
 # events
+
 Template.question.events
   # answer question with clicked alternative
   'click .alternative': (event) ->

@@ -15,59 +15,21 @@ failIfNull = (value=null, msg) ->
 
 # helpers
 
-@validateEmail = (email) ->
-  pattern = /// ^
-    (([^<>()[\]\\.,;:\s@\"]+
-    (\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))
-    @((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}
-    \.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+
-    [a-zA-Z]{2,}))$ ///
+# @currentPlayerId = -> Meteor.userId()
 
-  email.match pattern
-
-@startGame = ({challengeeId, acceptChallengeId, challengeeEmail}) ->
-  # Create the game, and go to the quiz view
-  Meteor.call 'newGame',
-    currentPlayerId(),
-    { challengeeId, acceptChallengeId, challengeeEmail },
-    (error, result) ->
-      unless error?
-        Session.set 'currentQuestion', 0
-        Session.set 'currentGameId', result.gameId
-        Router.go 'quiz', _id: Games.findOne(result.gameId).quizId
-      else
-        console.log 'Could not create new game: %s', error.error
-        console.log error
-
-@currentPlayerEmails = ->
-  if Meteor.user().emails?
-    Meteor.user().emails.map (c) -> c.address
-  else
-    []
-
-@currentPlayerId = -> Meteor.userId()
-
-@currentPlayer = -> Meteor.user()
+# @currentPlayer = -> Meteor.user()
 
 @currentGameId = -> Session.get 'currentGameId'
 
 @currentGame = -> Games.findOne currentGameId()
 
-@currentQuizId = -> Session.get 'currentQuizId'
+@currentQuizId = -> currentGame().quizId
 
 @currentQuiz = -> Quizzes.findOne currentQuizId()
 
 @currentGameFinished = ->
   outOfQuestions = currentGame().currentQuestion >= numberOfQuestions()
   outOfQuestions or currentGame().state is 'finished'
-
-@currentChallenge = ->
-  Challenges.findOne $or: [
-    { challengerGameId: currentGameId() }
-  , { challengeeGameId: currentGameId() }
-  ]
-
-@currentChallengeId = -> currentChallenge()._id
 
 @currentQuestionId = ->
   i = Session.get 'currentQuestion'
@@ -88,30 +50,3 @@ failIfNull = (value=null, msg) ->
   sound = Sounds.findOne currentQuestion().soundId
 
   "/audio/#{randomSegment(sound)}"
-
-
-###{
-  title: title
-  description: description
-  og: {
-    title: title
-    ..
-  }
-}###
-@headData = (data) ->
-  $head = $('head')
-
-  if data.title
-    $head.find('title').text(data.title)
-
-  if data.description
-    $head.find("meta[name='description']").text(data.description)
-
-  if data.og
-    for k in Object.keys(data.og)
-      $elem = $("meta[property='og:"+k+"']")
-
-      if $elem.length is 0
-        $("<meta>", { property: 'og:'+k, content: data.og[k] }).appendTo 'head'
-      else
-        $elem.attr('content',data.og[k])

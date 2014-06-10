@@ -4,11 +4,13 @@
   </div>
   <div class="row lobby">
     <div class="col-xs-12">
+
       <select data-sd-quiz-selector id="highscore-quiz-selector" class="form-control">
         {{#each quizzes}}
           <option data-quiz-id="{{_id}}" {{selectToday startDate}}>{{displayDate startDate}} {{name}}</option>
         {{/each}}
       </select>
+
       <table id="highscore-table" class="table table-bordered table-hover">
         <thead>
           <tr>
