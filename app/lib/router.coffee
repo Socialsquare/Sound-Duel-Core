@@ -41,6 +41,7 @@ if Meteor.isClient
         [
           Meteor.subscribe 'games'
           Meteor.subscribe 'quizzes'
+          Meteor.subscribe 'highscores'
         ]
 
     # quizzes (debug)

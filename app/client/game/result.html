@@ -18,6 +18,7 @@
   <br />
   <a class="btn btn-primary btn-block" href="{{pathFor 'highscores'}}">Se highscores</a>
 
+  {{> submit}}
 </template>
 
 <template name="socialshare">
@@ -26,3 +27,7 @@
   <a class="btn btn-default js-share-google" target="_blank" rel="nofollow" href="https://plus.google.com/share?url={{url}}" title="Del på Google+">Del på Google+</a>
 </template>
 
+<template name="submit">
+  <input id="submit-name" type="text" placeholder="Navn">
+  <button id="submit-highscore" class="btn btn-primary">Indsende</button>
+</template>

@@ -1,37 +1,37 @@
 # app/client/highscore/highscores.coffee
 
-todayDate = new Date()
-
 # helpers
 
 Template.highscores.helpers
   highscores: ->
 
-    search_obj =
-      score: { $gt: 0 }
-      # state: { $eq: 'finished' }
+    #TODO:
+    # search_obj =
+    #   score: { $gt: 0 }
+    #   # state: { $eq: 'finished' }
 
-    # The `state == 'finished'` criteria is not used, because
-    #  1. When there's no games in the database Minimongo breaks on this query
-    #  2. Only finished games have a score greater than zero
+    # # The `state == 'finished'` criteria is not used, because
+    # #  1. When there's no games in the database Minimongo breaks on this query
+    # #  2. Only finished games have a score greater than zero
 
-    if Session.get 'quizId'
-      Games.find(
-        score: { $gt: 0 }
-        quizId: Session.get 'quizId'
-      , { sort: [['score', 'desc']], limit: 20 })
-      # Highscores.find(
-      #   score: { $gt: 0 }
-      #   quizId: Session.get 'quizId'
-      # )
-    else
-      null
-      #OverallHighscores.find()
-      # Games.find(
-      #   score: { $gt: 0 }
-      # , { sort: [['score', 'desc']], limit: 20 })
+    # if Session.get 'quizId'
+    #   Games.find(
+    #     score: { $gt: 0 }
+    #     quizId: Session.get 'quizId'
+    #   , { sort: [['score', 'desc']], limit: 20 })
+    #   # Highscores.find(
+    #   #   score: { $gt: 0 }
+    #   #   quizId: Session.get 'quizId'
+    #   # )
+    # else
+    #   null
 
-
+    Highscores.find({}, { sort: [[ 'score', 'desc' ]], limit: 20 })
+      .fetch().map (h) ->
+        {
+          name: h.name
+          score: Games.findOne(h.gameId).score
+        }
 
   quizzes: ->
     today = new Date()
@@ -50,6 +50,7 @@ Template.highscores.events
     console.log(Session.get 'quizId')
 
 UI.registerHelper 'selectToday', (date) ->
+  todayDate = new Date()
   if todayDate.setHours(0,0,0,0) == date.setHours(0,0,0,0)
     ' selected="selected"'
   else
@@ -59,10 +60,6 @@ UI.registerHelper 'displayDate', (date) ->
   months = ['januar', 'februar', 'marts', 'april', 'maj', 'juni', 'juli',
     'august', 'september', 'oktober', 'november', 'december']
   date.getDate() + '. ' + months[date.getMonth()]
-
-UI.registerHelper 'playerUsername', (playerId) ->
-  player = Meteor.users.findOne(playerId)
-  if player then player.profile.name else '?'
 
 UI.registerHelper 'withPosition', (cursor, options) ->
   cursor.map (element, i) ->

@@ -17,9 +17,22 @@ Template.socialshare.helpers
 # events
 
 Template.result.events
-  'click a#restart': ->
-    Session.set 'currentGameId', ''
-    Router.go 'lobby'
+  'click a#restart': -> Router.go 'lobby'
+
+Template.submit.events
+  'click button#submit-highscore': (evt) ->
+    evt.preventDefault()
+
+    name = "#{$('input#submit-name').val()}".replace /^\s+|\s+$/g, ""
+    unless name
+      FlashMessages.sendError "Dit navn kan ikke være tomt"
+      return
+
+    Meteor.call 'submitHighscore', name, currentGameId(), (error, result) ->
+      if error?
+        console.log error
+      else
+        Router.go 'highscores'
 
 Template.socialshare.events
   'click .js-share-facebook': (event) ->

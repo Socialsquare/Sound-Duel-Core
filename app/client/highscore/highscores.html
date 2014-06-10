@@ -20,19 +20,17 @@
           </tr>
         </thead>
         <tbody>
-          {{#if highscores.count}}
           {{#each withPosition highscores}}
             <tr>
               <td>{{position}}</td>
-              <td>{{playerUsername playerId}}</td>
+              <td>{{name}}</td>
               <td>{{score}}</td>
             </tr>
-          {{/each}}
           {{else}}
             <tr>
               <td colspan="3">Ingen highscores endnu</td>
             </tr>
-          {{/if}}
+          {{/each}}
         </tbody>
       </table>
     </div>
