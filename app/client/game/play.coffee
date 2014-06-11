@@ -3,8 +3,7 @@
 # methods
 
 # From: http://stackoverflow.com/a/9255507/118608
-Template.question.startCountdown = ->
-  console.log 'startCountdown called'
+startCountdown = ->
   # Reset progress bar
   Session.set 'gameProgress', 100
   $('#asset-bar')
@@ -35,14 +34,14 @@ Template.question.startCountdown = ->
       # Remove button
       @remove()
 
-      __startQuestion($insertion_point, $countdown)
+      startAnimation($insertion_point, $countdown)
 
     # Insert button
     $insertion_point.after($button)
   else
     Template.assets.loadSound()
 
-    __startQuestion($insertion_point, $countdown)
+    startAnimation($insertion_point, $countdown)
 
   # Skip animation if spacebar is pressed
   $('body').keyup (e) ->
@@ -51,7 +50,7 @@ Template.question.startCountdown = ->
       Template.question.showQuestion()
 
 
-__startQuestion = ($insertion_point, $countdown) ->
+startAnimation = ($insertion_point, $countdown) ->
   # Insert and show countdown
   $insertion_point.after($countdown)
   $countdown.show()
@@ -205,8 +204,7 @@ Template.question.helpers
 # rendered
 
 Template.question.rendered = ->
-  console.log 'rendered'
-  Template.question.startCountdown()
+  startCountdown()
 
 
 # events
