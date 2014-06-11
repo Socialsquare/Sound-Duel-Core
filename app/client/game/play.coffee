@@ -58,11 +58,10 @@ startCountdown = ->
     startAnimation($insertion_point, $countdown)
 
   # Skip animation if spacebar is pressed
-  $('body').keyup (e) ->
-    if e.keyCode == 32
-      # user has pressed space
-      Template.question.showQuestion()
-
+  # $('body').keyup (e) ->
+  #   if e.keyCode == 32
+  #     # user has pressed space
+  #     Template.question.showQuestion()
 
 startAnimation = ($insertion_point, $countdown) ->
   # Insert and show countdown
