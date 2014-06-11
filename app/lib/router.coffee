@@ -5,6 +5,12 @@ Router.configure
   loadingTemplate: 'loading'
   notFoundTemplate: 'notFound'
 
+# filters
+
+Router._filters =
+  ganalytics: (pause) -> GAnalytics.pageview()
+
+filters = Router._filters
 
 # client
 
@@ -15,6 +21,9 @@ if Meteor.isClient
   Router.onBeforeAction 'loading'
   Router.onBeforeAction 'dataNotFound', only: 'game'
 
+  # after hooks
+
+  Router.onAfterAction filters.ganalytics, except: 'game'
 
   # routes
 
@@ -65,3 +74,7 @@ if Meteor.isClient
 
       action: ->
         @render @params.action
+
+      onAfterAction: (pause) ->
+        if @params.action is 'result'
+          GAnalytics.pageview()
