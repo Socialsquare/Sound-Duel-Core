@@ -54,29 +54,19 @@ Template.submit.events
         Router.go 'highscores'
 
 Template.socialshare.events
-  'click .js-share-facebook': (event) ->
+  'click .share': (event) ->
     event.preventDefault()
-    FB.ui({
-      # method: 'share_open_graph',
-      # action_type: 'og.likes',
-      # action_properties: JSON.stringify({
-      #   object:window.location.href,
-      # })
-      method: 'share',
-      href: 'http://www.dr.dk/sporten/fifavm2014/quiz',
-    }, (response) ->
-      console.log(response)
-    )
-  'click .js-share-google,.js-share-twitter': (event) ->
-    event.preventDefault()
+
     width = 400
     height = 300
     $window = $(window)
     leftPosition = ($window.width() / 2) - ((width / 2) + 10)
     topPosition = ($window.height() / 2) - ((height / 2) + 50)
+
     windowFeatures = "status=no,height=" +height +
     ",width=" + width +
     ",resizable=yes,left=" + leftPosition +
     ",top=" + topPosition +
     ",toolbar=no,menubar=no,scrollbars=no,location=no,directories=no"
+
     window.open($(event.target).attr('href'),'sharer', windowFeatures)
