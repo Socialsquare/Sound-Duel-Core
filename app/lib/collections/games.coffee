@@ -7,14 +7,7 @@
 Games.allow
   insert: (userId, doc) -> false
 
-  update: (userId, doc, fields, modifier) ->
-    allowedFields = [ 'answers', 'currentQuestion', 'state' ]
-
-    for f in fields
-      unless f in allowedFields
-        return false
-
-    true
+  update: (userId, doc, fields, modifier) -> false
 
   remove: (userId, doc) -> false
 
