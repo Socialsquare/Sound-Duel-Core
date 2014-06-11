@@ -27,7 +27,7 @@ Template.lobby.helpers
     unless quiz?
       "Der er ingen quiz i dag"
     else
-      quiz.name
+      quiz.description
 
 
 # events
