@@ -2,9 +2,6 @@
   <h2 id="heading"><strong>Resultat</strong></h2>
 
   <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><strong>TODO</strong></h3>
-    </div>
     <div class="panel-body">
       {{#with result}}
         <p id="ratio" class="lead">Du fik {{ratio}} rigtige svar!</p>
@@ -15,10 +12,9 @@
 
   {{> socialshare}}
 
-  <br />
-  <a class="btn btn-primary btn-block" href="{{pathFor 'highscores'}}">Se highscores</a>
-
-  {{> submit}}
+  {{#if isHighscore}}
+    {{> submit}}
+  {{/if}}
 </template>
 
 <template name="socialshare">
@@ -28,6 +24,8 @@
 </template>
 
 <template name="submit">
-  <input id="submit-name" type="text" placeholder="Navn">
-  <button id="submit-highscore" class="btn btn-primary">Indsende</button>
+  <form class="form-control">
+    <input id="submit-name" type="text" placeholder="Navn">
+    <button id="submit-highscore" class="btn btn-primary">Indsend</button>
+  </form>
 </template>

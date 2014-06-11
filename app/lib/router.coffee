@@ -54,6 +54,7 @@ if Meteor.isClient
 
       waitOn: ->
         [
+          Meteor.subscribe 'highscores'
           Meteor.subscribe 'games'
           Meteor.subscribe 'quizzes'
           Meteor.subscribe 'questions'

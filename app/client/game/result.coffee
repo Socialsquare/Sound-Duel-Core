@@ -10,6 +10,22 @@ Template.result.helpers
       ratio: "#{game.correctAnswers}/#{numberOfQuestions()}"
     }
 
+  isHighscore: ->
+    return false if currentGame().score == 0
+
+    highscores = Highscores.find
+      quizId: currentQuizId()
+      score: { $gt: 0 }
+    ,
+      sort: [[ 'score', 'desc' ]]
+      limit: 20
+
+    if highscores.count() < 20
+      true
+    else
+      worst = highscores.fetch().pop()
+      currentGame().score > worst.score
+
 Template.socialshare.helpers
   url: -> Meteor.absoluteUrl(Router.current().path)
 
