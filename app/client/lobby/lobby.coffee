@@ -17,6 +17,6 @@ startGame = ->
 
 # events
 
-Template.welcome.events
+Template.lobby.events
   'click .js-start-game': (event) ->
     startGame({})

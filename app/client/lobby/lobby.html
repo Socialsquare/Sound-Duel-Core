@@ -1,38 +1,23 @@
 <template name="lobby">
   <div class="page-header">
-    <h1>{{gameName}}</h1>
+    <h1>Velkommen til DR Sportens FIFA VM lyd quiz</h1>
   </div>
-  <div class="row lobby">
-    <div class="col-xs-12">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          {{> welcome}}
-          </div>
-      </div>
-    </div>
+  <div class="text-center">
+    <p class="lead">
+      Jeg har været i arkivet og fundet VM-lydbidder frem.<br>
+      Så skru op for din højtaler og se, om du kan gætte, hvor de er fra.
+    </p>
+    <p><em>- Marco de los Reyes,<br>redaktør, DR Sporten</em></p>
+    <p class="lead">I dag skal du gætte:
+
+    </p>
+    <p class="lead">
+      Gæt så hurtigt du kan, hvilken kamp lyden er fra. Jo hurtigere du gætter det, jo flere point får du.
+    </p>
   </div>
-</template>
-
-<template name="welcome">
-  <p class="lead">Velkommen til DR Sportens FIFA VM lyd quiz</p>
-  <p class="lead">
-    Jeg har været i arkivet og fundet VM-lydbidder frem.
-    Så skru op for din højtaler og se, om du kan gætte, hvor de er fra.
-  </p>
-  <p><em>- Marco de los Reyes,<br>redaktør, DR Sporten</em></p>
-
-  <p>I dag skal du gætte:</p>
-  <p class="lead">
-    XXXXXXXXX
-    YYYYY
-    ZZZZZZ
-  </p>
-  <p class="lead">
-    Gæt så hurtigt du kan, hvilken kamp lyden er fra. Jo hurtigere du gætter det, jo flere point får du.
-  </p>
   <div class="row">
-    <div class="col-xs-12 col-sm-6">
-      <button class="btn btn-primary btn-lg btn-block js-start-game">Start spil</button>
+    <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+      <button class="btn btn-primary btn-lg btn-block js-start-game">Næste</button>
     </div>
   </div>
 </template>
