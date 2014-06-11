@@ -15,6 +15,21 @@ startGame = ->
         console.log error
 
 
+# helpers
+
+Template.lobby.helpers
+  quizOfTheDay: ->
+    now = (new Date()).getTime()
+    quiz = Quizzes.find({},
+      sort: [[ 'startDate', 'desc' ]]
+    ).fetch().pop()
+
+    unless quiz?
+      "Der er ingen quiz i dag"
+    else
+      quiz.name
+
+
 # events
 
 Template.lobby.events

@@ -24,6 +24,12 @@ if Meteor.isServer
 
     Quizzes.find game.quizId
 
+  Meteor.publish 'quizOfTheDay', ->
+    today = new Date
+    Quizzes.find
+      startDate: { $lt: today }
+      endDate: { $gt: today }
+
   # TODO: testing
   Meteor.publish 'allQuizzes', ->
     Quizzes.find()

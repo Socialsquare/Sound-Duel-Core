@@ -23,6 +23,8 @@ if Meteor.isClient
     @route 'lobby',
       path: '/'
 
+      waitOn: -> Meteor.subscribe 'quizOfTheDay'
+
     # highscore
     @route 'highscores',
       waitOn: ->
