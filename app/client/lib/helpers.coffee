@@ -1,18 +1,5 @@
 # app/client/helpers.coffee
 
-# methods
-
-# helper method for failing gracefully when required value is null
-failIfNull = (value=null, msg) ->
-  # if given value is null, route to home screen and throw error
-  unless value?
-    Router.go 'lobby'
-    throw new Meteor.Error 404, msg
-  # else, return the value
-  else
-    value
-
-
 # helpers
 
 UI.registerHelper 'gameName', -> "Marco's Crazy VM spil"
@@ -30,8 +17,14 @@ UI.registerHelper 'gameName', -> "Marco's Crazy VM spil"
   currentQuiz().questionIds[i]
 
 @currentQuestion = ->
-  failIfNull Questions.findOne(currentQuestionId()),
-    "Current question not found (id: #{currentQuestionId()})"
+  question = Questions.findOne currentQuestionId()
+
+  unless question?
+    Router.go 'lobby'
+    throw new Meteor.Error 404,
+      "Question not found (id: '#{currentQuestionId()}')"
+  else
+    question
 
 @numberOfQuestions = ->
   Quizzes.findOne(currentGame().quizId).questionIds.length

@@ -20,7 +20,7 @@ MONTHS = [
 Template.highscores.helpers
   quizzes: ->
     today = new Date()
-    quizzes = Quizzes.find startDate: { $lt: today} ,
+    quizzes = Quizzes.find startDate: { $lt: today } ,
       sort: [[ 'startDate', 'asc' ]]
 
   highscores: ->
