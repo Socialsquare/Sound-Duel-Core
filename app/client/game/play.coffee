@@ -92,37 +92,18 @@ startAnimation = ($insertion_point, $countdown) ->
       Template.question.showQuestion()
   )
 
-
-answerQuestion = (answer) ->
+answerQuestion = (idx) ->
   # pause asset
   audioPlayer().pause()
   $audioPlayer().unbind('timeupdate')
 
-  # calculate points
-  # TODO: move points calc to server
-  points = parseInt($('#asset-bar').text(), 10)
-  # if asset hasn't started, max points
-  if isNaN points then points = currentGame().pointsPerQuestion
-
-  # update current game object
-  Games.update currentGameId(),
-    $addToSet:
-      answers:
-        questionId: currentQuestion()._id
-        answer: answer
-        points: points
-    $inc:
-      currentQuestion: 1
-
-  question_counter = Session.get('currentQuestion')
-
   # If we answered the last question
-  if question_counter + 1 == currentQuiz().questionIds.length
+  if idx >= currentQuiz().questionIds.length
     Meteor.call 'endGame', currentGameId(), (error, result) ->
       Router.go 'game', _id: currentGameId(), action: 'result'
   else
     # otherwise go to the next question
-    Session.set('currentQuestion', question_counter + 1)
+    Session.set 'currentQuestion', idx
     startCountdown()
 
 
@@ -155,12 +136,10 @@ Template.assets.helpers
 
   # binds audio element progression with progress bar
   bindAssetProgress: ->
-    #console.log 'bindAssetProgress() called'
     $audioPlayer().bind 'timeupdate', ->
-      #console.log 'timeupdate eventListener called'
       percent = (this.currentTime * 100) / this.duration
       Session.set 'gameProgress', percent
-      value = (currentGame().pointsPerQuestion * (100 - percent)) / 100
+      value = (currentQuiz().pointsPerQuestion * (100 - percent)) / 100
 
       # update progress bar width depending on audio progress
       $('#asset-bar')
@@ -168,16 +147,20 @@ Template.assets.helpers
         .text Math.floor(value) + " point"
 
 Template.question.showQuestion = ->
-  # Hide countdown, show questions
-  $('[data-sd-quiz-progressbar]').show()
-  $(".sound-duel-countdown").hide()
-  $('#alternative-container').show()
+  Meteor.call 'startQuestion', currentGameId(), (err) ->
+    if err?
+      console.log err
+    else
+      # Hide countdown, show questions
+      $('[data-sd-quiz-progressbar]').show()
+      $(".sound-duel-countdown").hide()
+      $('#alternative-container').show()
 
-  # Enable answer buttons
-  $('.alternative').prop 'disabled', false
+      # Enable answer buttons
+      $('.alternative').prop 'disabled', false
 
-  # Play sound
-  Template.assets.playAsset()
+      # Play sound
+      Template.assets.playAsset()
 
 Template.question.helpers
   currentQuestion: -> currentQuiz().name
@@ -226,4 +209,9 @@ Template.question.events
   # answer question with clicked alternative
   'click .alternative': (event) ->
     $('.alternative').prop 'disabled', true
-    answerQuestion event.target.id
+    Meteor.call 'stopQuestion',
+      currentGameId(), event.target.id, (err, result) ->
+        if err?
+          console.log err
+        else
+          answerQuestion result
