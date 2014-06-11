@@ -17,6 +17,14 @@
 
   {{#if isHighscore}}
     {{> submit}}
+  {{else}}
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+        <a class="btn btn-default btn-primary btn-block" href="{{pathFor 'highscores'}}">
+          Se highscoreliste
+        </a>
+      </div>
+    </div>
   {{/if}}
 </template>
 
