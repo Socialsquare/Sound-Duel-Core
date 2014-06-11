@@ -22,15 +22,18 @@ Template.result.events
 Template.submit.events
   'click button#submit-highscore': (evt) ->
     evt.preventDefault()
+    $('button#submit-highscore').attr 'disabled', true
 
     name = "#{$('input#submit-name').val()}".replace /^\s+|\s+$/g, ""
     unless name
       FlashMessages.sendError "Dit navn kan ikke være tomt"
+      $('button#submit-highscore').attr 'disabled', false
       return
 
     Meteor.call 'submitHighscore', name, currentGameId(), (error, result) ->
       if error?
         console.log error
+        $('button#submit-highscore').attr 'disabled', false
       else
         Router.go 'highscores'
 
