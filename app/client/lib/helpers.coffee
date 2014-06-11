@@ -2,7 +2,7 @@
 
 # helpers
 
-UI.registerHelper 'gameName', -> "Marco's Crazy VM spil"
+UI.registerHelper 'gameName', -> "%GAME_NAME%"
 
 @currentGameId = -> Session.get 'currentGameId'
 
@@ -30,10 +30,5 @@ UI.registerHelper 'gameName', -> "Marco's Crazy VM spil"
   Quizzes.findOne(currentGame().quizId).questionIds.length
 
 @currentAudioSrc = ->
-  randomSegment = (sound) ->
-    return null unless sound.segments?.length
-    sound.segments[Math.floor(Math.random() * sound.segments.length)]
-
   sound = Sounds.findOne currentQuestion().soundId
-
-  "/audio/#{randomSegment(sound)}"
+  "/audio/#{sound.segment}"
