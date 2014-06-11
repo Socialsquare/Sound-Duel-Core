@@ -53,6 +53,7 @@ if Meteor.isClient
       onRun: ->
         id = @params._id
         Deps.nonreactive ->
+          Session.set 'currentQuestionId', 0
           Session.set 'currentGameId', id
 
       onBeforeAction: (pause) ->
