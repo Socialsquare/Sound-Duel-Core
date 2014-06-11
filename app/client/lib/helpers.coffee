@@ -15,9 +15,7 @@ failIfNull = (value=null, msg) ->
 
 # helpers
 
-# @currentPlayerId = -> Meteor.userId()
-
-# @currentPlayer = -> Meteor.user()
+UI.registerHelper 'gameName', -> "Marco's Crazy VM spil"
 
 @currentGameId = -> Session.get 'currentGameId'
 

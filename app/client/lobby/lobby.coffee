@@ -15,12 +15,6 @@ startGame = ->
         console.log error
 
 
-# helpers
-
-Template.lobby.helpers
-  game_name: -> "Marco's Crazy VM spil"
-
-
 # events
 
 Template.welcome.events
