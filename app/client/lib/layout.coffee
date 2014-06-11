@@ -1,4 +1,4 @@
-# app/client/utils/layout.coffee
+# app/client/lib/layout.coffee
 
 # helpers
 
@@ -10,10 +10,3 @@ UI.registerHelper 'active', (route) ->
     'active'
   else
     ''
-
-Template.navbar.helpers
-  externallink: -> 'http://www.dr.dk/sporten/fifavm2014'
-
-# Template.currentUser.helpers
-#   name: ->
-#     Meteor.user().profile.name
