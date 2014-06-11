@@ -2,14 +2,17 @@
   <div class="page-header">
     <h1>Highscore liste</h1>
   </div>
+
   <div class="row lobby">
     <div class="col-xs-12">
 
-      <select data-sd-quiz-selector id="highscore-quiz-selector" class="form-control">
+      <select data-sd-quiz-selector id="quiz-selector" class="form-control">
         {{#each quizzes}}
-          <option data-quiz-id="{{_id}}" {{selectToday startDate}}>{{displayDate startDate}} {{name}}</option>
+          <option data-quiz-id="{{_id}}" {{selected _id}}>{{displayDate startDate}} - {{name}}</option>
         {{/each}}
       </select>
+
+      <br />
 
       <table id="highscore-table" class="table table-bordered table-hover">
         <thead>
@@ -35,5 +38,4 @@
       </table>
     </div>
   </div>
-
 </template>
