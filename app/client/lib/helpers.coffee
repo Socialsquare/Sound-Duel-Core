@@ -7,7 +7,7 @@ failIfNull = (value=null, msg) ->
   # if given value is null, route to home screen and throw error
   unless value?
     Router.go 'lobby'
-    throw new Error msg
+    throw new Meteor.Error 404, msg
   # else, return the value
   else
     value
@@ -24,10 +24,6 @@ UI.registerHelper 'gameName', -> "Marco's Crazy VM spil"
 @currentQuizId = -> currentGame().quizId
 
 @currentQuiz = -> Quizzes.findOne currentQuizId()
-
-@currentGameFinished = ->
-  outOfQuestions = currentGame().currentQuestion >= numberOfQuestions()
-  outOfQuestions or currentGame().state is 'finished'
 
 @currentQuestionId = ->
   i = Session.get 'currentQuestion'
