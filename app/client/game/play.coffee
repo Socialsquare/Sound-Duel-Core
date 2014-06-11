@@ -25,7 +25,7 @@ startCountdown = ->
 
   if is_iOS and Session.get('currentQuestion') == 0
 
-    $button = $('<button>Start</button>')
+    $button = $("<button class='btn btn-primary btn-block'>Start</button>")
     $button.click ->
 
       # Play silent audio clip top obtain the right from iOS to play audio
