@@ -15,4 +15,10 @@ Highscores.allow
 
 if Meteor.isServer
   Meteor.publish 'highscores', ->
-    Highscores.find() # TODO
+    Highscores.find()
+
+  Meteor.publish 'currentQuizHighscores', (gameId) ->
+    game = Games.findOne gameId
+    return [] unless game?
+
+    Highscores.find quizId: game.quizId

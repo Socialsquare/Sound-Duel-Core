@@ -7,28 +7,19 @@
 Games.allow
   insert: (userId, doc) -> false
 
-  update: (userId, doc, fields, modifier) -> true
-    # allowedFields = [ 'answers', 'currentQuestion', 'state' ]
-    # isAllowedFields = true
-    # for f in fields
-    #   unless f in allowedFields
-    #     isAllowedFields = false
+  update: (userId, doc, fields, modifier) ->
+    allowedFields = [ 'answers', 'currentQuestion', 'state' ]
 
-    # isGameOwner = userId == doc.playerId
+    for f in fields
+      unless f in allowedFields
+        return false
 
-    # res = isAllowedFields && isGameOwner
-
-    # console.log "Game update:"
-    # if res
-    #   console.log "allowed"
-    # else
-    #   console.log "DENIED"
-    # res
+    true
 
   remove: (userId, doc) -> false
 
 # publish
 
 if Meteor.isServer
-  Meteor.publish 'games', ->
-    Games.find() # TODO
+  Meteor.publish 'currentGame', (id) ->
+    Games.find id

@@ -4,18 +4,6 @@ Router.configure
   layoutTemplate: 'layout'
   loadingTemplate: 'loading'
   notFoundTemplate: 'notFound'
-  # waitOn: ->
-  #   [
-  #     Meteor.subscribe 'currentUser'
-  #     Meteor.subscribe 'users'
-  #   ]
-
-
-# filters
-
-# Router._filters =
-
-# filters = Router._filters
 
 
 # client
@@ -39,14 +27,13 @@ if Meteor.isClient
     @route 'highscores',
       waitOn: ->
         [
-          Meteor.subscribe 'games'
           Meteor.subscribe 'quizzes'
-          Meteor.subscribe 'highscores'
+        , Meteor.subscribe 'highscores'
         ]
 
-    # quizzes (debug)
+    # quizzes # TODO: testing
     @route 'quizzes',
-      waitOn: -> Meteor.subscribe 'quizzes'
+      waitOn: -> Meteor.subscribe 'allQuizzes'
 
     # game
     @route 'game',
@@ -54,11 +41,11 @@ if Meteor.isClient
 
       waitOn: ->
         [
-          Meteor.subscribe 'highscores'
-          Meteor.subscribe 'games'
-          Meteor.subscribe 'quizzes'
-          Meteor.subscribe 'questions'
-          Meteor.subscribe 'sounds'
+          Meteor.subscribe 'currentGame', @params._id
+        , Meteor.subscribe 'currentQuiz', @params._id
+        , Meteor.subscribe 'currentQuizQuestions', @params._id
+        , Meteor.subscribe 'currentQuizSounds', @params._id
+        , Meteor.subscribe 'currentQuizHighscores', @params._id
         ]
 
       data: -> Games.findOne @params._id
