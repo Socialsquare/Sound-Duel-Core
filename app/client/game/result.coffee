@@ -27,7 +27,7 @@ Template.result.helpers
       currentGame().score > worst.score
 
 Template.socialshare.helpers
-  url: -> Meteor.absoluteUrl(Router.current().path)
+  url: -> 'http://www.dr.dk/sporten/fifavm2014/quiz'
 
 
 # events
@@ -63,7 +63,7 @@ Template.socialshare.events
       #   object:window.location.href,
       # })
       method: 'share',
-      href: Meteor.absoluteUrl(Router.current().path),
+      href: 'http://www.dr.dk/sporten/fifavm2014/quiz',
     }, (response) ->
       console.log(response)
     )

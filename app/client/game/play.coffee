@@ -25,7 +25,9 @@ startCountdown = ->
 
   if is_iOS and Session.get('currentQuestion') == 0
 
-    $button = $("<button class='btn btn-primary btn-block'>Start</button>")
+    $button = $(
+      "<button class='btn btn-primary btn-lg btn-block'>Start</button>"
+    )
     $button.click ->
 
       # Play silent audio clip top obtain the right from iOS to play audio
@@ -152,7 +154,7 @@ Template.assets.helpers
       # update progress bar width depending on audio progress
       $('#asset-bar')
         .attr('style', "width: #{100 - percent}%")
-        .text Math.floor(value) + " points"
+        .text Math.floor(value) + " point"
 
 Template.question.showQuestion = ->
   # Hide countdown, show questions
