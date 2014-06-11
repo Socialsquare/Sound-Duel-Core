@@ -110,7 +110,7 @@ answerQuestion = (answer) ->
   else
     # otherwise go to the next question
     Session.set('currentQuestion', question_counter + 1)
-    Template.question.startCountdown()
+    startCountdown()
 
 
 # helpers
