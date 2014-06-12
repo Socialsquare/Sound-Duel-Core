@@ -70,8 +70,8 @@ startAnimation = ($insertion_point, $countdown) ->
 
   # Setup variables
   i = 0
-  texts = ['3', '2', '1', 'Start!']
-  $('.sound-duel-countdown').text(texts[i])
+  texts = ['3', '2', '1', 'Start']
+  $('.sound-duel-countdown').html texts[i]
 
   # Change text on every animation iteration
   $(".sound-duel-countdown").bind(
@@ -141,10 +141,15 @@ Template.assets.helpers
       Session.set 'gameProgress', percent
       value = (currentQuiz().pointsPerQuestion * (100 - percent)) / 100
 
+      if percent == 0
+        text = ""
+      else
+        text = Math.floor(value) + " point"
+
       # update progress bar width depending on audio progress
       $('#asset-bar')
         .attr('style', "width: #{100 - percent}%")
-        .text Math.floor(value) + " point"
+        .text text
 
 Template.question.showQuestion = ->
   Meteor.call 'startQuestion', currentGameId(), (err) ->
@@ -176,7 +181,7 @@ Template.question.helpers
     if percent is 100
       ''
     else if percent > 66
-      'percent-bar-danger'
+      'progress-bar-danger'
     else if percent > 33
       'progress-bar-warning'
     else
