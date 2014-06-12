@@ -1,5 +1,19 @@
 # app/client/game/play.coffee
 
+# IE fix
+`
+Element.prototype.remove = function() {
+    this.parentElement.removeChild(this);
+}
+NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+    for(var i = 0, len = this.length; i < len; i++) {
+        if(this[i] && this[i].parentElement) {
+            this[i].parentElement.removeChild(this[i]);
+        }
+    }
+}
+`
+
 # methods
 
 # http://coffeescriptcookbook.com/chapters/arrays/shuffling-array-elements
@@ -28,7 +42,8 @@ startCountdown = ->
   # Remove countdown
   $countdown = $(".sound-duel-countdown")
   $insertion_point = $countdown.prev()
-  $countdown.remove()
+  # $countdown.remove()
+  document.getElementsByClassName("sound-duel-countdown").remove() # fix IE
   $countdown.removeClass('smaller')
 
   # **iOS**: Ensure that sound is started
@@ -37,16 +52,18 @@ startCountdown = ->
 
   if is_iOS and Session.get('currentQuestion') == 0
 
-    $button = $(
-      "<button class='btn btn-primary btn-lg btn-block'>Start</button>"
-    )
+    $button = $("<button id='start'
+      class='btn btn-primary btn-lg btn-block'>
+      Start</button>")
+
     $button.click ->
 
       # Play silent audio clip top obtain the right from iOS to play audio
       Template.assets.playSilence()
 
       # Remove button
-      @remove()
+      # @remove()
+      document.getElementById('start').remove() # fix IE
 
       startAnimation($insertion_point, $countdown)
 
@@ -71,7 +88,10 @@ startAnimation = ($insertion_point, $countdown) ->
   # Setup variables
   i = 0
   texts = ['3', '2', '1', 'Start']
+
   $('.sound-duel-countdown').html texts[i]
+
+  return if Session.get('currentQuestion') > 0
 
   # Change text on every animation iteration
   $(".sound-duel-countdown").bind(
@@ -80,6 +100,7 @@ startAnimation = ($insertion_point, $countdown) ->
     ->
       i += 1
       $(this).text(texts[i])
+
       if texts[i].length > 2
         $(this).addClass('smaller')
       else
@@ -90,6 +111,7 @@ startAnimation = ($insertion_point, $countdown) ->
   $(".sound-duel-countdown").bind(
     "animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", ->
       Template.question.showQuestion()
+      i = 0
   )
 
 answerQuestion = (idx) ->
