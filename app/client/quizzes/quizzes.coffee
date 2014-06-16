@@ -18,7 +18,9 @@ Template.quizRow.helpers
 # events
 
 Template.quizRow.events
-  'click [data-sd-startDate]': -> @startDate = today()
+  'click [data-sd-startDate]': ->
+    Quizzes.update @_id, $set:
+      startDate: today()
 
   'click [data-sd-endDate]': ->
     Quizzes.update @_id, $set:
