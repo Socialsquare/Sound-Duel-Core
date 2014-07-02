@@ -45,6 +45,10 @@ Template.submit.events
       FlashMessages.sendError "Dit navn kan ikke være tomt"
       $('button#submit-highscore').attr 'disabled', false
       return
+    else if name.length > 32
+      FlashMessages.sendError "Dit navn er for langt"
+      $('button#submit-highscore').attr 'disabled', false
+      return
 
     Meteor.call 'submitHighscore', name, currentGameId(), (error, result) ->
       if error?
