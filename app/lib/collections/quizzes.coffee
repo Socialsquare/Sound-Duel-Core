@@ -26,9 +26,7 @@ if Meteor.isServer
 
   Meteor.publish 'quizOfTheDay', ->
     today = new Date
-    Quizzes.find
-      startDate: { $lt: today }
-      endDate: { $gt: today }
+    Quizzes.find()
 
   # TODO: testing
   Meteor.publish 'allQuizzes', ->
