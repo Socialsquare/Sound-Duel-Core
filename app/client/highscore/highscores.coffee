@@ -20,12 +20,14 @@ MONTHS = [
 Template.highscores.helpers
   quizzes: ->
     today = new Date()
-    quizzes = Quizzes.find startDate: { $lt: today } ,
-      sort: [[ 'startDate', 'asc' ]]
+    quizzes = Quizzes.find( startDate: { $lt: today } ,
+      sort: [[ 'startDate', 'asc' ]]).fetch()
+    Session.set 'initQuizId', quizzes[0]._id
+    quizzes
 
   highscores: ->
-    selectedId = $("#quiz-selector option:selected").data('quiz-id')
-    quizId = Session.get 'quizId' or selectedId
+    #selectedId = $("#quiz-selector option:selected").data('quiz-id')
+    quizId = Session.get('quizId') or Session.get('initQuizId')
 
     Highscores.find
       quizId: quizId
